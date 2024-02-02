@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Página</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilos específicos para la nueva pantalla de Historial Médico */
+        .historial-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap; /* Permite que los elementos se envuelvan a la siguiente línea */
+        }
+
+        .historial-menu {
+            width: 30%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+
+        .historial-btn-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .historial-btn {
+            margin-bottom: 10px;
+            padding: 8px;
+            background-color: #007bff;
+            color: gold;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+        }
+
+        .historial-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .historial-dropdown {
+            display: none;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            position: absolute;
+            z-index: 1;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .historial-btn:hover .historial-dropdown {
+            display: block;
+        }
+
+        .historial-dropdown-btn {
+            width: 100%;
+            padding: 8px;
+            background-color: #007bff;
+            color: gold;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .historial-dropdown-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilos para el cuadro de diálogo */
+        .dialog {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 2;
+        }
+
+        .dialog input {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .dialog button {
+            padding: 8px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dialog button:hover {
+            background-color: #0056b3;
+        }
+        /* Estilos específicos para la nueva pantalla de citas analisis y diagnostico */
+        .citas-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .citas-form {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-top: 70px;
+        }
+
+        .citas-btn {
+            width: 70%; 
+            padding: 8px;
+            background-color: #007bff;
+            color: gold;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .citas-btn:hover {
+            background-color: #0056b3;
+        }
+        .citas-dropdown {
+            display: none;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            position: absolute;
+            z-index: 1;
+            width: 100%;
+            margin-top: 8px;
+        }
+        .citas-btn:hover .historial-dropdown {
+            display: block;
+        }
+
+        .citas-dropdown-btn {
+            width: 100%;
+            padding: 8px;
+            background-color: #007bff;
+            color: gold;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .citas-dropdown-btn:hover {
+            background-color: #0056b3;
+        }
+        /* Estilos para el cuadro de diálogo */
+        .dialog {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 2;
+        }
+
+        .dialog input {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .dialog button {
+            padding: 8px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dialog button:hover {
+            background-color: #0056b3;
+        }
+
+        .citas-section {
+            width: 70%;
+            margin-top: 20px;
+            display: none; /* Inicialmente oculto */
+        }
+
+        .citas-section label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .citas-section input {
+            width: 70%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        /* Estilo adicional para ocultar la sección */
+        .citas-analisis-diagnostico {
+            display: none;
+        }
+            .configuracion {
+                display: none;
+            }
+    
+            .configuracion-container {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+    
+            .configuracion-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 10px;
+                width: 100%; /* Ajusta el ancho según tus preferencias */
+            }
+    
+            .configuracion-icon {
+                width: 50px; /* Tamaño común de los íconos (ajusta según tus preferencias) */
+                height: 50px; /* Tamaño común de los íconos (ajusta según tus preferencias) */
+                margin-right: 10px; /* Espaciado entre el ícono y el texto */
+            }
+    
+            .configuracion-item p {
+                color: gold;
+            }
+    
+            .usuario::before {
+                content: url('usuario.png');
+            }
+    
+            .notificaciones::before {
+                content: url('notificaciones.png');
+            }
+    
+            .ajuste::before {
+                content: url('ajuste.png');
+            }
+    
+            .ayuda::before {
+                content: url('AYUDA.png');
+            }
+        
+    </style>
+</head>
+<body>
+    <div class="menu-bar">
+        <a class="menu-item inicio" href="#">Inicio</a>
+        <a class="menu-item crear-cuenta-btn" href="#">Crear cuenta</a>
+        <a class="menu-item historial-medico-btn" href="#">Historial médico</a>
+        <a class="menu-item Citas-Análisis-y-diagnóstico-btn" href="#">Citas Análisis y diagnóstico</a>
+        <a class="menu-item Configuración-btn" href="#">Configuración</a>
+        <a class="menu-item Cerrar-sesión-btn" href="#">Cerrar sesión</a>
+    </div>
+    
+    <div class="container inicio-sesion"style="display: block;">
+        <!-- Contenido de la pantalla de inicio de sesión -->
+        <h1>Iniciar sesión</h1>
+        <form>
+            <div class="form-group">
+                <label for="usuario">Usuario</label>
+                <input type="text" id="usuario" name="usuario" placeholder="Usuario">
+            </div>
+            <div class="form-group">
+                <label for="contrasena">Contraseña</label>
+                <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña">
+            </div>
+            <button type="submit">Iniciar sesión</button>
+        </form>
+        <p><a href="#">¿Olvidó su Contraseña?</a></p>
+    </div>
+
+    <div class="container crear-cuenta" style="display: none;">
+        <!-- Contenido de la pantalla de crear cuenta -->
+        <h1>Crear cuenta</h1>
+        <form>
+            <div class="form-group">
+                <label for="nombres">Nombres</label>
+                <input type="text" id="nombres" name="nombres" placeholder="Nombres">
+            </div>
+            <div class="form-group">
+                <label for="apellidos">Apellidos</label>
+                <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos">
+            </div>
+            <div class="form-group">
+                <label for="cedula">Cédula</label>
+                <input type="text" id="cedula" name="cedula" placeholder="Cédula">
+            </div>
+            <div class="form-group">
+                <label for="fecha-nacimiento">Fecha de Nacimiento</label>
+                <input type="date" id="fecha-nacimiento" name="fecha-nacimiento">
+            </div>
+            <div class="form-group">
+                <label for="especialidad">Especialidad</label>
+                <input type="text" id="especialidad" name="especialidad" placeholder="Especialidad">
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="terminos" name="terminos">
+                <label for="terminos">Acepto términos y condiciones</label>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="politicas" name="politicas">
+                <label for="politicas">Acepto políticas de privacidad</label>
+            </div>
+            <button type="submit">Guardar y Continuar</button>
+        </form>
+    </div>
+
+    <div class="container historial-medico" style="display: none;">
+        <h1>Historial Médico</h1>
+        <div class="historial-container">
+            <div class="historial-menu">
+                <div class="historial-btn-group">
+                    <button class="historial-btn" onclick="pedirCedula()">Paciente</button>
+                </div>
+            </div>
+            <div class="historial-menu">
+                <div class="historial-btn-group">
+                    <button class="historial-btn" onclick="mostrarInformacion('Consultas Anteriores')">Consultas Anteriores</button>
+                    <div class="historial-dropdown">
+                        <button class="historial-dropdown-btn" id="consulta1">Consulta 1</button>
+                        <button class="historial-dropdown-btn" id="consulta2">Consulta 2</button>
+                        <button class="historial-dropdown-btn" id="consulta3">Consulta 3</button>
+                    </div>
+                </div>
+                <div class="historial-btn-group">
+                    <button class="historial-btn" onclick="mostrarInformacion('Tratamientos Pasados')">Tratamientos Pasados</button>
+                    <div class="historial-dropdown">
+                        <button class="historial-dropdown-btn" id="tratamientoA">Tratamiento A</button>
+                        <button class="historial-dropdown-btn" id="tratamientoB">Tratamiento B</button>
+                        <button class="historial-dropdown-btn" id="tratamientoC">Tratamiento C</button>
+                    </div>
+                </div>
+                <div class="historial-btn-group">
+                    <button class="historial-btn" onclick="mostrarInformacion('Resultados de Análisis Médicos')">Resultados de Análisis Médicos</button>
+                    <div class="historial-dropdown">
+                        <button class="historial-dropdown-btn" id="resultado1">Resultado 1</button>
+                        <button class="historial-dropdown-btn" id="resultado2">Resultado 2</button>
+                        <button class="historial-dropdown-btn" id="resultado3">Resultado 3</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="historial-contenido">
+            <!-- Contenido específico del historial médico -->
+            <!-- Puedes personalizar esta sección según tus necesidades -->
+        </div>
+    </div>
+
+    <!-- Cuadro de diálogo para ingresar la cédula -->
+    <div class="dialog" id="cedulaDialog">
+        <h2>Ingrese la Cédula del Paciente</h2>
+        <input type="text" id="cedulaInput" placeholder="Número de Cédula">
+        <button onclick="cargarInformacion()">Aceptar</button>
+    </div>
+
+    <!-- Cuadro de diálogo para Consultas Anteriores -->
+    <div class="dialog" id="consultaDialog">
+        <h2>Consultas Anteriores</h2>
+        <p id="consultaInfo">Información de Consultas Anteriores ficticia.</p>
+        <button onclick="cerrarDialog('consultaDialog')">Cerrar</button>
+    </div>
+
+    <!-- Cuadro de diálogo para Tratamientos Pasados -->
+    <div class="dialog" id="tratamientoDialog">
+        <h2>Tratamientos Pasados</h2>
+        <p id="tratamientoInfo">Información de Tratamientos Pasados ficticia.</p>
+        <button onclick="cerrarDialog('tratamientoDialog')">Cerrar</button>
+    </div>
+
+    <!-- Cuadro de diálogo para Resultados de Análisis Médicos -->
+    <div class="dialog" id="resultadoDialog">
+        <h2>Resultados de Análisis Médicos</h2>
+        <p id="resultadoInfo">Información de Resultados de Análisis Médicos ficticia.</p>
+        <button onclick="cerrarDialog('resultadoDialog')">Cerrar</button>
+    </div>
+    <div class="container citas-analisis-diagnostico">
+        <h1>Citas, Análisis y Diagnóstico</h1>
+        <div class="citas-container">
+            <!-- Botones para seleccionar la sección -->
+            <button class="citas-btn" onclick="pedirCedula()">Paciente</button>
+            <button class="citas-btn" onclick="mostrarSeccion('cita')">Calendario de Cita</button>
+            <button class="citas-btn" onclick="mostrarSeccion('analisis')">Solicitud de Análisis</button>
+            <button class="citas-btn" onclick="mostrarSeccion('resultado')">Resultado y Diagnóstico</button>
+            </div>
+            <!-- Secciones correspondientes (inicialmente ocultas) -->
+            <div class="citas-section" id="pacienteSection">
+                <label for="cedula">Número de Cédula:</label>
+                <input type="text" id="cedula" name="cedula">
+            </div>
+            <div class="citas-section" id="citaSection">
+                <label for="cita">Calendario de Cita:</label>
+                <input type="text" id="cita" name="cita" placeholder="Seleccionar fecha y hora">
+            </div>
+            <div class="citas-section" id="analisisSection">
+                <label for="analisis">Solicitud de Análisis:</label>
+                <input type="text" id="analisis" name="analisis">
+            </div>
+            <div class="citas-section" id="resultadoSection">
+                <label for="resultado">Resultado y Diagnóstico:</label>
+                <input type="text" id="resultado" name="resultado">
+            </div>
+            
+            </div>
+        </div>
+    </div>
+    <!-- Contenedor de la pantalla de configuración -->
+    <div class="container configuracion" style="display: none;">
+        <h1>Configuración</h1>
+        <div class="configuracion-container">
+            <div class="configuracion-item">
+                <p>Perfil Médico</p>
+                <button class="configuracion-icon usuario"></button>
+            </div>
+            <div class="configuracion-item">
+                <p>Notificaciones</p>
+                <button class="configuracion-icon notificaciones"></button>
+            </div>
+            <div class="configuracion-item">
+                <p>Configuración y Privacidad</p>
+                <button class="configuracion-icon ajuste"></button>
+            </div>
+            <div class="configuracion-item">
+                <p>Ayuda</p>
+                <button class="configuracion-icon ayuda"></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container cerrar-sesion" style="display: none;">
+    <h1>Cerrar Sesión</h1>
+    <!-- Contenido específico para cerrar sesión, por ejemplo, un mensaje de despedida o confirmación -->
+    <p>¿Está seguro de que desea cerrar sesión?</p>
+    <button onclick="cerrarSesion()">Cerrar Sesión</button>
+</div>
+</div>
+
+
+<script>
+// JavaScript para alternar entre las pantallas y cargar la información
+const enlaceInicioSesion = document.getElementById('enlace-inicio-sesion');
+const pantallaInicioSesion = document.querySelector('.inicio-sesion');
+
+document.querySelector('.crear-cuenta-btn').addEventListener('click', function() {
+    document.querySelector('.inicio-sesion').style.display = 'none';
+    document.querySelector('.crear-cuenta').style.display = 'block';
+    document.querySelector('.historial-medico').style.display = 'none';
+    document.querySelector('.citas-analisis-diagnostico').style.display = 'none';
+    document.querySelector('.configuracion').style.display = 'none';
+    document.querySelector('.cerrar-sesion').style.display = 'none';
+});
+
+document.querySelector('.historial-medico-btn').addEventListener('click', function() {
+    document.querySelector('.inicio-sesion').style.display = 'none';
+    document.querySelector('.crear-cuenta').style.display = 'none';
+    document.querySelector('.historial-medico').style.display = 'block';
+    document.querySelector('.citas-analisis-diagnostico').style.display = 'none';
+    document.querySelector('.configuracion').style.display = 'none';
+    document.querySelector('.cerrar-sesion').style.display = 'none';
+});
+
+document.querySelector('.Citas-Análisis-y-diagnóstico-btn').addEventListener('click', function() {
+    document.querySelector('.inicio-sesion').style.display = 'none';
+    document.querySelector('.crear-cuenta').style.display = 'none';
+    document.querySelector('.historial-medico').style.display = 'none';
+    document.querySelector('.citas-analisis-diagnostico').style.display = 'block';
+    document.querySelector('.configuracion').style.display = 'none';
+    document.querySelector('.cerrar-sesion').style.display = 'none';
+});
+
+
+    // JavaScript para alternar entre las pantallas y cargar la información
+    document.querySelector('.Configuración-btn').addEventListener('click', function() {
+        document.querySelector('.inicio-sesion').style.display = 'none';
+        document.querySelector('.crear-cuenta').style.display = 'none';
+        document.querySelector('.historial-medico').style.display = 'none';
+        document.querySelector('.citas-analisis-diagnostico').style.display = 'none';
+        document.querySelector('.configuracion').style.display = 'block';
+        document.querySelector('.cerrar-sesion').style.display = 'none';
+    });
+    document.querySelector('.Cerrar-sesión-btn').addEventListener('click', function() {
+        document.querySelector('.inicio-sesion').style.display = 'none';
+        document.querySelector('.crear-cuenta').style.display = 'none';
+        document.querySelector('.historial-medico').style.display = 'none';
+        document.querySelector('.citas-analisis-diagnostico').style.display = 'none';
+        document.querySelector('.configuracion').style.display = 'none';
+        document.querySelector('.cerrar-sesion').style.display = 'block';
+    });
+    
+
+function pedirCedula() {
+    document.getElementById('cedulaDialog').style.display = 'block';
+}
+
+
+function cargarInformacion() {
+    // Lógica de carga ficticia
+    const cedula = document.getElementById('cedulaInput').value;
+    document.getElementById('consulta1').innerText = `Consulta 1 para ${cedula}`;
+    document.getElementById('consulta2').innerText = `Consulta 2 para ${cedula}`;
+    document.getElementById('consulta3').innerText = `Consulta 3 para ${cedula}`;
+    document.getElementById('tratamientoA').innerText = `Tratamiento A para ${cedula}`;
+    document.getElementById('tratamientoB').innerText = `Tratamiento B para ${cedula}`;
+    document.getElementById('tratamientoC').innerText = `Tratamiento C para ${cedula}`;
+    document.getElementById('resultado1').innerText = `Resultado 1 para ${cedula}`;
+    document.getElementById('resultado2').innerText = `Resultado 2 para ${cedula}`;
+    document.getElementById('resultado3').innerText = `Resultado 3 para ${cedula}`;
+    // Cerrar el cuadro de diálogo
+    document.getElementById('cedulaDialog').style.display = 'none';
+}
+
+// Simular información al hacer clic en "Consultas Anteriores"
+document.getElementById('consultaBtn').addEventListener('click', function() {
+    document.getElementById('consultaInfo').innerText = 'Información de Consultas Anteriores ficticia.';
+    document.getElementById('consultaDialog').style.display = 'block';
+});
+
+// Simular información al hacer clic en "Tratamientos Pasados"
+document.getElementById('tratamientoBtn').addEventListener('click', function() {
+    document.getElementById('tratamientoInfo').innerText = 'Información de Tratamientos Pasados ficticia.';
+    document.getElementById('tratamientoDialog').style.display = 'block';
+});
+
+// Simular información al hacer clic en "Resultados de Análisis Médicos"
+document.getElementById('resultadoBtn').addEventListener('click', function() {
+    document.getElementById('resultadoInfo').innerText = 'Información de Resultados de Análisis Médicos ficticia.';
+    document.getElementById('resultadoDialog').style.display = 'block';
+});
+
+// Cerrar cuadros de información simulada
+function cerrarDialog(dialogId) {
+    document.getElementById(dialogId).style.display = 'none';
+}
+document.querySelectorAll('.container').forEach(function(container) {
+    container.style.display = 'none';
+});
+function cerrarSesion() {
+    // Lógica para cerrar sesión, por ejemplo, redirección a la página de inicio de sesión
+    window.location.href = 'pagina-de-inicio-sesion.html';
+}
+
+
+</script>
+</body>
+</html>
+
